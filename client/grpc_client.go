@@ -34,4 +34,11 @@ func main() {
 	}
 	log.Printf("All users: %v", r.GetUsers())
 
+	x, err := c.GetUserById(ctx, &pb.GetUserByIdRequest{Id: "1"})
+	if err != nil {
+		log.Fatalf("Could not users from grpc server: %v", err)
+	}
+
+	log.Printf("User with id 1: %v", x)
+
 }

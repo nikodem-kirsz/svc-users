@@ -12,7 +12,6 @@ service Users {
     rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
     rpc UpdateUser (UpdateUserRequest) returns (UserResponse);
     rpc GetAllUsers (google.protobuf.Empty) returns (GetAllUsersResponse);
-
 }
 
 message GetUserByIdRequest {
@@ -47,7 +46,7 @@ message RegisterUserResponse {
 }
 
 message UserResponse {
-    int64 id = 1;
+    string id = 1;
     string email = 2;
     string first_name = 3;
     string last_name = 4;
@@ -56,7 +55,7 @@ message UserResponse {
 }
 
 message User {
-    int64 id = 1;
+    string id = 1;
     string email = 2;
     string first_name = 3;
     string last_name = 4;

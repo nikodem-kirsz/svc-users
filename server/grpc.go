@@ -19,7 +19,7 @@ var (
 )
 
 type User struct {
-	UUID         int64
+	UUID         string
 	email        string
 	first_name   string
 	last_name    string
@@ -60,10 +60,23 @@ func (s *usersServer) GetAllUsers(ctx context.Context, _ *emptypb.Empty) (*pb.Ge
 }
 
 func (s *usersServer) GetUser(context.Context, *emptypb.Empty) (*pb.UserResponse, error) {
+
 	return &pb.UserResponse{}, nil
 }
 
-func (s *usersServer) GetUserById(context.Context, *pb.GetUserByIdRequest) (*pb.UserResponse, error) {
+func (s *usersServer) GetUserById(ctx context.Context, filter *pb.GetUserByIdRequest) (*pb.UserResponse, error) {
+	for _, user := range s.users {
+		if user.UUID == filter.Id {
+			return &pb.UserResponse{
+				Id:          user.UUID,
+				Email:       user.email,
+				FirstName:   user.first_name,
+				LastName:    user.last_name,
+				Locale:      user.locale,
+				PhoneNumber: user.phone_number,
+			}, nil
+		}
+	}
 	return &pb.UserResponse{}, nil
 }
 
@@ -84,9 +97,9 @@ func main() {
 	grpcServer := grpc.NewServer()
 	s := &usersServer{
 		users: []*User{
-			{email: "niko@niko.pl", first_name: "niko", last_name: "okin", phone_number: "1234567", locale: "en-GB"},
-			{email: "niko2@niko.pl", first_name: "niko2", last_name: "okin2", phone_number: "1234567", locale: "en-GB"},
-			{email: "niko3@niko.pl", first_name: "niko3", last_name: "okin3", phone_number: "1234567", locale: "en-GB"},
+			{UUID: "1", email: "niko@niko.pl", first_name: "niko", last_name: "okin", phone_number: "1234567", locale: "en-GB"},
+			{UUID: "2", email: "niko2@niko.pl", first_name: "niko2", last_name: "okin2", phone_number: "1234567", locale: "en-GB"},
+			{UUID: "3", email: "niko3@niko.pl", first_name: "niko3", last_name: "okin3", phone_number: "1234567", locale: "en-GB"},
 		},
 	}
 	pb.RegisterUsersServer(grpcServer, s)
