@@ -40,6 +40,7 @@ type Metrics struct {
 type JWT struct {
 }
 
-func Load(*Config) {
-
+func Load() (*Config, error) {
+	ctg := &Config{}
+	return ctg, nil
 }
